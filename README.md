@@ -5,7 +5,7 @@ into characters by default.
 
 Get it here:
 
-- [Wally](https://wally.run/package/ahmoin/character_animate)
+- [Wally](https://wally.run/package/ahmoin/character-animate)
 - [Releases](https://github.com/ahmoin/character_animate/releases)
 
 ## API
