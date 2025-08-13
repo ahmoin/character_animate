@@ -104,7 +104,7 @@ local function stopAllPlayingAnimationsOnHumanoid(humanoid: Humanoid)
 	end
 end
 
-local function addDefaultAnimations(parent: Instance)
+local function _addDefaultAnimations(parent: Instance)
 	for name, serializedAnimations in SERIALIZED_DEFAULT_ANIMATIONS do
 		local found = parent:FindFirstChild(name)
 

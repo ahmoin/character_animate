@@ -1,6 +1,7 @@
 --!strict
 
--- AnimateR15 and AnimateR6
+local Packages = script.Parent.Parent
+local Signal = require(Packages:WaitForChild("Signal"))
 
 export type SerializedAnimation = {
 	id: string,
@@ -93,10 +94,6 @@ export type AnimationEntityR6 = AnimationEntity & {
 
 -- Manual Director
 
-type ScriptSignal = RBXScriptSignal & {
-	Fire: (...any) -> (),
-}
-
 type SetMovement = (Vector3, number) -> ()
 type FireState = (Enum.HumanoidStateType, ...any) -> ()
 
@@ -107,16 +104,16 @@ export type ManualDirector = {
 }
 
 export type ManualHumanoid = {
-	Died: ScriptSignal,
-	Running: ScriptSignal,
-	Jumping: ScriptSignal,
-	Climbing: ScriptSignal,
-	GettingUp: ScriptSignal,
-	FreeFalling: ScriptSignal,
-	FallingDown: ScriptSignal,
-	Seated: ScriptSignal,
-	PlatformStanding: ScriptSignal,
-	Swimming: ScriptSignal,
+	Died: Signal.ClassType,
+	Running: Signal.ClassType,
+	Jumping: Signal.ClassType,
+	Climbing: Signal.ClassType,
+	GettingUp: Signal.ClassType,
+	FreeFalling: Signal.ClassType,
+	FallingDown: Signal.ClassType,
+	Seated: Signal.ClassType,
+	PlatformStanding: Signal.ClassType,
+	Swimming: Signal.ClassType,
 
 	MoveDirection: Vector3,
 	WalkSpeed: number,
