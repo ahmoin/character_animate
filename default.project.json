@@ -1,5 +1,5 @@
 {
-	"name": "character-animate",
+	"name": "character_animate",
 	"tree": {
 		"$path": "src"
 	}

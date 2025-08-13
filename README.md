@@ -1,10 +1,12 @@
 # Character Animate
-A replacement implementation of the `Animate` script that is typically loaded into characters by default.
+
+A replacement implementation of the `Animate` script that is typically loaded
+into characters by default.
 
 Get it here:
 
-* [Wally](https://wally.run/package/egomoose/character-animate)
-* [Releases](https://github.com/EgoMoose/character-animate/releases)
+- [Wally](https://wally.run/package/ahmoin/character_animate)
+- [Releases](https://github.com/ahmoin/character_animate/releases)
 
 ## API
 

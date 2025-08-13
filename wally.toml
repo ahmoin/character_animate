@@ -1,8 +1,8 @@
 [package]
-name = "egomoose/character-animate"
+name = "ahmoin/character_animate"
 version = "0.0.3"
 license = "MIT"
-description = "https://github.com/EgoMoose/character-animate"
+description = "https://github.com/ahmoin/character_animate"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
