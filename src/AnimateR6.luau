@@ -420,7 +420,7 @@ do
 	function humanoidStateHandlers.Running(entity: AnimationEntity, speed: number)
 		if speed > 0.01 then
 			actions.playAnimation(entity, "walk", 0.1)
-			if entity.state.currentAnimInstance and entity.state.currentAnimInstance.AnimationId == "rbxassetid://180426354" then
+			if entity.state.currentAnimInstance and entity.state.currentAnimInstance.AnimationId == module.serializedDefaultAnimations.walk[1].id then
 				actions.setAnimationSpeed(entity, speed / 14.5)
 			end
 			entity.state.pose = "Running"
