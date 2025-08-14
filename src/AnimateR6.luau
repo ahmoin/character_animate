@@ -90,6 +90,7 @@ module.serializedDefaultAnimations = {
 		{ id = "rbxassetid://129423030", weight = 10 },
 	},
 } :: { [string]: { SerializedAnimation } }
+module.onKeyFrameReached = nil :: (AnimationEntity, string) -> ()?
 
 -- Private
 
@@ -283,6 +284,9 @@ do
 	end
 
 	function actions.onKeyFrameReached(entity: AnimationEntity, frameName: string)
+		if type(module.onKeyFrameReached) == "function" then
+			module.onKeyFrameReached(entity, frameName)
+		end
 		if frameName == "End" then
 			local repeatAnim = entity.state.currentAnim
 

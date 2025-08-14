@@ -99,6 +99,7 @@ module.serializedDefaultAnimations = {
 		{ id = "rbxassetid://507770677", weight = 10 },
 	},
 } :: { [string]: { SerializedAnimation } }
+module.onKeyFrameReached = nil :: (AnimationEntity, string) -> ()?
 
 -- selene: allow(multiple_statements)
 local userNoUpdateOnLoopSuccess, userNoUpdateOnLoopValue = pcall(function()
@@ -374,6 +375,9 @@ do
 	end
 
 	function actions.onKeyFrameReached(entity: AnimationEntity, frameName: string)
+		if type(module.onKeyFrameReached) == "function" then
+			module.onKeyFrameReached(entity, frameName)
+		end
 		if frameName == "End" then
 			if entity.state.currentAnim == "walk" then
 				if userNoUpdateOnLoop then
