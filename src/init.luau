@@ -5,11 +5,26 @@ local AnimateR15 = require(script:WaitForChild("AnimateR15"))
 local ManualDirector = require(script:WaitForChild("ManualDirector"))
 local ExportedTypes = require(script:WaitForChild("ExportedTypes"))
 
+type SerializedAnimation = ExportedTypes.SerializedAnimation
+
 local module = {}
 
-local function animateInternal(parent: Instance, director: Humanoid | ExportedTypes.ManualHumanoid, performer: Humanoid?): ExportedTypes.AnimateController
+local function animateInternal(
+	parent: Instance,
+	director: Humanoid | ExportedTypes.ManualHumanoid,
+	performer: Humanoid?,
+	serializedDefaultAnimations: { [string]: { SerializedAnimation } }?
+): ExportedTypes.AnimateController
 	local castedDirector = director :: Humanoid
 	local actor = performer or castedDirector
+
+	local animateModule = if actor.RigType == Enum.HumanoidRigType.R6 then AnimateR6 else AnimateR15
+
+	if serializedDefaultAnimations then
+		for name, serializedAnimations in serializedDefaultAnimations do
+			animateModule.serializedDefaultAnimations[name] = serializedAnimations
+		end
+	end
 
 	local controller
 	if actor.RigType == Enum.HumanoidRigType.R6 then
@@ -21,8 +36,8 @@ local function animateInternal(parent: Instance, director: Humanoid | ExportedTy
 	return controller
 end
 
-function module.animate(parent: Instance, director: Humanoid, performer: Humanoid?): ExportedTypes.AnimateController
-	return animateInternal(parent, director, performer)
+function module.animate(parent: Instance, director: Humanoid, performer: Humanoid?, serializedDefaultAnimations: { [string]: { SerializedAnimation } }?): ExportedTypes.AnimateController
+	return animateInternal(parent, director, performer, serializedDefaultAnimations)
 end
 
 function module.animateManually(parent: Instance, performer: Humanoid): ExportedTypes.AnimateControllerManually
