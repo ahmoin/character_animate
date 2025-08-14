@@ -100,7 +100,7 @@ module.serializedDefaultAnimations = {
 	},
 } :: { [string]: { SerializedAnimation } }
 module.onKeyFrameReached = nil :: (AnimationEntity, string) -> ()?
-module.markers = {} :: { [string]: () -> () }
+module.markers = {} :: { [string]: (paramString: string) -> () }
 
 -- selene: allow(multiple_statements)
 local userNoUpdateOnLoopSuccess, userNoUpdateOnLoopValue = pcall(function()
