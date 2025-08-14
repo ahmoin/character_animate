@@ -1,6 +1,6 @@
 [package]
 name = "ahmoin/character-animate"
-version = "0.0.8"
+version = "0.0.9"
 license = "MIT"
 description = "https://github.com/ahmoin/character_animate"
 registry = "https://github.com/UpliftGames/wally-index"
