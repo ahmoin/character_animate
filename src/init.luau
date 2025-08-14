@@ -15,7 +15,8 @@ local function animateInternal(
 	director: Humanoid | ExportedTypes.ManualHumanoid,
 	performer: Humanoid?,
 	serializedDefaultAnimations: { [string]: { SerializedAnimation } }?,
-	onKeyFrameReached: ((entity: AnimationEntity, frameName: string) -> ())?
+	onKeyFrameReached: ((entity: AnimationEntity, frameName: string) -> ())?,
+	markers: { [string]: () -> () }?
 ): ExportedTypes.AnimateController
 	local castedDirector = director :: Humanoid
 	local actor = performer or castedDirector
@@ -30,6 +31,10 @@ local function animateInternal(
 
 	if onKeyFrameReached then
 		(animateModule :: any).onKeyFrameReached = onKeyFrameReached
+	end
+
+	if markers then
+		(animateModule :: any).markers = markers
 	end
 
 	local controller
@@ -47,9 +52,10 @@ function module.animate(
 	director: Humanoid,
 	performer: Humanoid?,
 	serializedDefaultAnimations: { [string]: { SerializedAnimation } }?,
-	onKeyFrameReached: ((entity: AnimationEntity, frameName: string) -> ())?
+	onKeyFrameReached: ((entity: AnimationEntity, frameName: string) -> ())?,
+	markers: { [string]: () -> () }?
 ): ExportedTypes.AnimateController
-	return animateInternal(parent, director, performer, serializedDefaultAnimations, onKeyFrameReached)
+	return animateInternal(parent, director, performer, serializedDefaultAnimations, onKeyFrameReached, markers)
 end
 
 function module.animateManually(parent: Instance, performer: Humanoid): ExportedTypes.AnimateControllerManually

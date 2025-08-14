@@ -91,6 +91,7 @@ module.serializedDefaultAnimations = {
 	},
 } :: { [string]: { SerializedAnimation } }
 module.onKeyFrameReached = nil :: (AnimationEntity, string) -> ()?
+module.markers = {} :: { [string]: () -> () }
 
 -- Private
 
@@ -265,6 +266,11 @@ do
 			entity.state.currentAnimKeyframeHandler:Disconnect()
 		end
 
+		for _, handler in entity.state.currentKeyAnimMarkerReachedHandlers do
+			handler:Disconnect()
+		end
+		entity.state.currentKeyAnimMarkerReachedHandlers = {}
+
 		if entity.state.currentAnimTrack then
 			entity.state.currentAnimTrack:Stop()
 			entity.state.currentAnimTrack:Destroy()
@@ -336,9 +342,18 @@ do
 				entity.state.currentAnimKeyframeHandler:Disconnect()
 			end
 
+			for _, handler in entity.state.currentKeyAnimMarkerReachedHandlers do
+				handler:Disconnect()
+			end
+			entity.state.currentKeyAnimMarkerReachedHandlers = {}
+
 			entity.state.currentAnimKeyframeHandler = currentAnimTrack.KeyframeReached:Connect(function(frameName: string)
 				actions.onKeyFrameReached(entity, frameName)
 			end)
+
+			for markerName, markerFunction in module.markers do
+				currentAnimTrack:GetMarkerReachedSignal(markerName):Connect(markerFunction)
+			end
 		end
 	end
 
@@ -575,6 +590,7 @@ function module.animate(parent: Instance, director: Humanoid, performer: Humanoi
 			currentAnimInstance = nil,
 			currentAnimTrack = nil,
 			currentAnimKeyframeHandler = nil,
+			currentKeyAnimMarkerReachedHandlers = {},
 			currentAnimSpeed = 1,
 
 			toolAnim = "",

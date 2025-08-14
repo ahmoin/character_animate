@@ -100,6 +100,7 @@ module.serializedDefaultAnimations = {
 	},
 } :: { [string]: { SerializedAnimation } }
 module.onKeyFrameReached = nil :: (AnimationEntity, string) -> ()?
+module.markers = {} :: { [string]: () -> () }
 
 -- selene: allow(multiple_statements)
 local userNoUpdateOnLoopSuccess, userNoUpdateOnLoopValue = pcall(function()
@@ -285,6 +286,11 @@ do
 			entity.state.currentAnimKeyframeHandler:Disconnect()
 		end
 
+		for _, handler in entity.state.currentKeyAnimMarkerReachedHandlers do
+			handler:Disconnect()
+		end
+		entity.state.currentKeyAnimMarkerReachedHandlers = {}
+
 		if entity.state.currentAnimTrack then
 			entity.state.currentAnimTrack:Stop()
 			entity.state.currentAnimTrack:Destroy()
@@ -464,9 +470,18 @@ do
 				entity.state.currentAnimKeyframeHandler:Disconnect()
 			end
 
+			for _, handler in entity.state.currentKeyAnimMarkerReachedHandlers do
+				handler:Disconnect()
+			end
+			entity.state.currentKeyAnimMarkerReachedHandlers = {}
+
 			entity.state.currentAnimKeyframeHandler = currentAnimTrack.KeyframeReached:Connect(function(frameName: string)
 				actions.onKeyFrameReached(entity, frameName)
 			end)
+
+			for markerName, markerFunction in module.markers do
+				currentAnimTrack:GetMarkerReachedSignal(markerName):Connect(markerFunction)
+			end
 
 			-- check to see if we need to blend a walk/run animation
 			if name == "walk" then
@@ -707,6 +722,7 @@ function module.animate(parent: Instance, director: Humanoid, performer: Humanoi
 			currentAnimInstance = nil,
 			currentAnimTrack = nil,
 			currentAnimKeyframeHandler = nil,
+			currentKeyAnimMarkerReachedHandlers = {},
 			currentAnimSpeed = 1,
 
 			runAnimTrack = nil,

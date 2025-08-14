@@ -27,6 +27,7 @@ type AnimationStateR15 = {
 	currentAnimInstance: Animation?,
 	currentAnimTrack: AnimationTrack?,
 	currentAnimKeyframeHandler: RBXScriptConnection?,
+	currentKeyAnimMarkerReachedHandlers: { RBXScriptConnection },
 	currentAnimSpeed: number,
 
 	runAnimTrack: AnimationTrack?,
@@ -57,6 +58,7 @@ type AnimationStateR6 = {
 	currentAnimInstance: Animation?,
 	currentAnimTrack: AnimationTrack?,
 	currentAnimKeyframeHandler: RBXScriptConnection?,
+	currentKeyAnimMarkerReachedHandlers: { RBXScriptConnection },
 	currentAnimSpeed: number,
 
 	toolAnim: string,
