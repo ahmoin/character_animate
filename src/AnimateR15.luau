@@ -19,7 +19,20 @@ type AnimationEntity = ExportedTypes.AnimationEntityR15
 
 local EPSILON = 1E-4
 
-local SERIALIZED_DEFAULT_ANIMATIONS: { [string]: { SerializedAnimation } } = {
+local EMOTE_NAMES: { [string]: boolean } = {
+	wave = false,
+	point = false,
+	dance = true,
+	dance2 = true,
+	dance3 = true,
+	laugh = false,
+	cheer = false,
+}
+
+local random = Random.new()
+
+local module = {}
+module.serializedDefaultAnimations = {
 	idle = {
 		{ id = "rbxassetid://507766666", weight = 1 },
 		{ id = "rbxassetid://507766951", weight = 1 },
@@ -85,20 +98,7 @@ local SERIALIZED_DEFAULT_ANIMATIONS: { [string]: { SerializedAnimation } } = {
 	cheer = {
 		{ id = "rbxassetid://507770677", weight = 10 },
 	},
-}
-
-local EMOTE_NAMES: { [string]: boolean } = {
-	wave = false,
-	point = false,
-	dance = true,
-	dance2 = true,
-	dance3 = true,
-	laugh = false,
-	cheer = false,
-}
-
-local module = {}
-local random = Random.new()
+} :: { [string]: { SerializedAnimation } }
 
 -- selene: allow(multiple_statements)
 local userNoUpdateOnLoopSuccess, userNoUpdateOnLoopValue = pcall(function()
@@ -120,7 +120,7 @@ local function stopAllPlayingAnimationsOnHumanoid(humanoid: Humanoid)
 end
 
 local function _addDefaultAnimations(parent: Instance)
-	for name, serializedAnimations in SERIALIZED_DEFAULT_ANIMATIONS do
+	for name, serializedAnimations in module.serializedDefaultAnimations do
 		local found = parent:FindFirstChild(name)
 
 		if not found then
@@ -156,7 +156,7 @@ end
 local actions = {}
 do
 	function actions.refreshAnimationSet(entity: AnimationEntity, name: string)
-		local defaults = SERIALIZED_DEFAULT_ANIMATIONS[name]
+		local defaults = module.serializedDefaultAnimations[name]
 		if not defaults then
 			return
 		end
@@ -733,7 +733,7 @@ function module.animate(parent: Instance, director: Humanoid, performer: Humanoi
 	-- addDefaultAnimations(parent) -- TODO: handle race conditions w/ custom animations loading after
 	stopAllPlayingAnimationsOnHumanoid(performer)
 
-	for name, _ in SERIALIZED_DEFAULT_ANIMATIONS do
+	for name, _ in module.serializedDefaultAnimations do
 		actions.refreshAnimationSet(entity, name)
 	end
 
